@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Обчислення ряду</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h2>Введіть параметри</h2>
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputLabel for="x" value="Значення x:" />
+            <p:inputText id="x" value="#{calculatorBean.x}" />
+
+            <h:outputLabel for="n" value="Кількість доданків n:" />
+            <p:inputText id="n" value="#{calculatorBean.n}" />
+
+            <h:outputLabel for="epsilon1" value="Точність epsilon1:" />
+            <p:inputText id="epsilon1" value="#{calculatorBean.epsilon1}" />
+        </h:panelGrid>
+
+        <p:commandButton value="Обчислити" action="#{calculatorBean.calculate}" update="result" />
+
+        <!-- Виведення повідомлень про помилки -->
+        <h:panelGroup rendered="#{not empty calculatorBean.errorMessage}">
+            <h:outputText value="#{calculatorBean.errorMessage}" style="color: red;" />
+        </h:panelGroup>
+
+        <!-- Виведення результатів -->
+        <h:panelGroup rendered="#{not empty calculatorBean.calculation}">
+            <h2>Результати обчислень</h2>
+            <h:outputText value="Сума перших n доданків: #{calculatorBean.calculation.sum}" escape="false" />
+            <br />
+            <h:outputText value="Сума для epsilon1: #{calculatorBean.sumEpsilon1}" escape="false" />
+            <br />
+            <h:outputText value="Сума для epsilon2: #{calculatorBean.sumEpsilon2}" escape="false" />
+            <br />
+            <h:outputText value="Точне значення: #{calculatorBean.calculation.exactValue}" escape="false" />
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>

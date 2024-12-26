@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Function Tabulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .input-section, .results-section {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .result-table th, .result-table td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .result-table th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .error {
+      color: red;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid red;
+      border-radius: 4px;
+      background-color: #fee;
+    }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</h:head>
+
+<h:body>
+  <h:form>
+    <h:panelGrid columns="2" cellpadding="5" styleClass="container">
+      <!-- Input Section -->
+      <h:panelGrid columns="1" styleClass="input-section">
+        <h2>Function Tabulation</h2>
+        <h:outputLabel for="xStart" value="Start Value (x₀):" />
+        <h:inputText id="xStart" value="#{tabulateBean.xStart}" required="true" />
+
+        <h:outputLabel for="xEnd" value="End Value (xₙ):" />
+        <h:inputText id="xEnd" value="#{tabulateBean.xEnd}" required="true" />
+
+        <h:outputLabel for="step" value="Step (Δx):" />
+        <h:inputText id="step" value="#{tabulateBean.step}" required="true" />
+
+        <p:commandButton value="Tabulate" action="#{tabulateBean.tabulate}" update="tabulationResults" />
+      </h:panelGrid>
+
+      <!-- Error Message -->
+      <h:panelGroup rendered="#{tabulateBean.errorMessage != null and not empty tabulateBean.errorMessage}">
+        <h:outputText value="#{tabulateBean.errorMessage}" styleClass="error" />
+      </h:panelGroup>
+
+      <!-- Results Section -->
+      <h:panelGrid columns="1" styleClass="results-section">
+        <h2>Results</h2>
+        <h:dataTable value="#{tabulateBean.tabulation}" var="result" rendered="#{tabulateBean.tabulation != null and not empty tabulateBean.tabulation}">
+          <h:column>
+            <f:facet name="header">x</f:facet>
+            #{result.x}
+          </h:column>
+          <h:column>
+            <f:facet name="header">f(x)</f:facet>
+            #{result.fx}
+          </h:column>
+        </h:dataTable>
+      </h:panelGrid>
+    </h:panelGrid>
+  </h:form>
+</h:body>
+</html>
